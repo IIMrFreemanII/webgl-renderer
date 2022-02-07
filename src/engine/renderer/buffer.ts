@@ -43,8 +43,13 @@ export class VertexBuffer {
   buffer: WebGLBuffer;
   layout: BufferLayout;
 
-  constructor(array: number[], layout: BufferLayout, drawType: number | null = null) {
-    this.gl = Renderer.gl;
+  constructor(
+    gl: WebGL2RenderingContext,
+    array: number[],
+    layout: BufferLayout,
+    drawType: number | null = null,
+  ) {
+    this.gl = gl;
     this.buffer = this.gl.createBuffer() as WebGLBuffer;
     this.layout = layout;
 
@@ -75,8 +80,8 @@ export class IndexBuffer {
   gl: WebGL2RenderingContext;
   buffer: WebGLBuffer;
 
-  constructor(array: number[]) {
-    this.gl = Renderer.gl;
+  constructor(gl: WebGL2RenderingContext, array: number[]) {
+    this.gl = gl;
     this.buffer = this.gl.createBuffer() as WebGLBuffer;
 
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffer);
@@ -165,8 +170,8 @@ export class UniformBuffer {
   layout: UniformBufferLayout;
   target = 0;
 
-  constructor(layout: UniformBufferLayout, target: number) {
-    this.gl = Renderer.gl;
+  constructor(gl: WebGL2RenderingContext, layout: UniformBufferLayout, target: number) {
+    this.gl = gl;
     this.layout = layout;
     this.target = target;
 
@@ -200,8 +205,8 @@ export class ModelsBuffer {
   gl: WebGL2RenderingContext;
   buffer: WebGLBuffer;
 
-  constructor(byteLength: number) {
-    this.gl = Renderer.gl;
+  constructor(gl: WebGL2RenderingContext, byteLength: number) {
+    this.gl = gl;
     this.buffer = this.gl.createBuffer() as WebGLBuffer;
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffer);
     this.gl.bufferData(this.gl.ARRAY_BUFFER, byteLength, this.gl.DYNAMIC_DRAW);

@@ -26,21 +26,21 @@ const fromFlatTo2D = (matrix4: number[]) => {
 export type UniformBufferObjects = Record<string, UniformBuffer>;
 
 export class Renderer {
-  static canvas = document.createElement("canvas");
-  static gl = this.canvas.getContext("webgl2") as WebGL2RenderingContext;
-  static ubos: UniformBufferObjects;
+  canvas = document.createElement("canvas");
+  gl = this.canvas.getContext("webgl2") as WebGL2RenderingContext;
+  ubos: UniformBufferObjects;
 
-  static setSize(width: number, height: number) {
+  setSize(width: number, height: number) {
     this.canvas.width = width;
     this.canvas.height = height;
     this.gl.viewport(0, 0, width, height);
   }
 
-  static getSize(): vec2 {
+  getSize(): vec2 {
     return vec2.fromValues(this.canvas.width, this.canvas.height);
   }
 
-  static submit(mesh: Mesh, shader: Shader) {
+  submit(mesh: Mesh, shader: Shader) {
     mesh.vertexArray.bind();
     shader.bind();
     shader.setUniforms();
@@ -48,7 +48,7 @@ export class Renderer {
     this.drawArrays(mesh);
   }
 
-  static begin(perspective: mat4, view: mat4) {
+  begin(perspective: mat4, view: mat4) {
     this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     // Clear the canvas
     this.clear();
@@ -58,21 +58,21 @@ export class Renderer {
     this.gl.enable(this.gl.CULL_FACE);
   }
 
-  static end() {}
+  end() {}
 
-  static start() {
-    const shader = new Shader("default2D", vertex, fragment);
+  start() {
+    const shader = new Shader(this.gl, "default2D", vertex, fragment);
     // const quad = new Mesh({
     //   a_position: [0, 0, 30, 0, 0, 150, 0, 150, 30, 0, 30, 150],
     // });
     const quads = [
       {
-        mesh: new Mesh({ a_position: getQuad(1, 1) }),
+        mesh: new Mesh(this.gl, { a_position: getQuad(1, 1) }),
         x: 100,
         y: 200,
       },
       {
-        mesh: new Mesh({ a_position: getQuad(1, 1) }),
+        mesh: new Mesh(this.gl, { a_position: getQuad(1, 1) }),
         x: 300,
         y: 200,
       },
@@ -143,21 +143,23 @@ export class Renderer {
     requestAnimationFrame(animate);
   }
 
-  static drawArrays(mesh: Mesh) {
+  drawArrays(mesh: Mesh) {
     this.gl.drawArrays(mesh.drawMode, 0, mesh.count);
   }
 
-  static drawArraysInstanced(mesh: Mesh, instancesCount: number) {
+  drawArraysInstanced(mesh: Mesh, instancesCount: number) {
     this.gl.drawArraysInstanced(mesh.drawMode, 0, mesh.count, instancesCount);
   }
 
-  private static clear() {
+  clear() {
     this.gl.clearColor(0, 0, 0, 0);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
   }
 
-  private static clear2D() {
+  clear2D() {
     this.gl.clearColor(0, 0, 0, 0);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
   }
 }
+
+export const mainRenderer = new Renderer();

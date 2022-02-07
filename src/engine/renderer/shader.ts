@@ -21,8 +21,8 @@ export class Shader {
   private readonly gl: WebGL2RenderingContext;
   private readonly program: WebGLProgram;
 
-  constructor(name: string, vertSrc: string, fragScr: string) {
-    this.gl = Renderer.gl;
+  constructor(gl: WebGL2RenderingContext, name: string, vertSrc: string, fragScr: string) {
+    this.gl = gl;
     this.name = name;
 
     // create GLSL shaders, upload the GLSL source, compile the shaders

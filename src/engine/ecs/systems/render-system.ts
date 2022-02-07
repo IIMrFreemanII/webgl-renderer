@@ -2,7 +2,7 @@ import { System } from "../system";
 import { glMatrix, mat4, vec3 } from "gl-matrix";
 import { Transform } from "../components";
 import { RenderData } from "../components/render-data";
-import { Renderer } from "../../renderer";
+import { mainRenderer } from "../../renderer";
 import { UniformBuffer, UniformBufferElement, UniformBufferLayout } from "../../renderer/buffer";
 
 export class RenderSystem extends System {
@@ -21,7 +21,7 @@ export class RenderSystem extends System {
   // view = mat4.create();
 
   onCreate() {
-    Renderer.start();
+    // mainRenderer.start();
     // vec3.normalize(this.invertLightDir, this.invertLightDir);
     // mat4.perspective(
     //   this.perspective,
