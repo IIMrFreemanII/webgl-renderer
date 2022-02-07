@@ -1,0 +1,42 @@
+html {
+  min-width: 320px;
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "Nunito Sans", -apple-system, ".SFNSText-Regular", "San Francisco",
+    BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: var(--palette-text-default);
+  background-color: var(--pallete-background-lighter);
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  overscroll-behavior: auto contain;
+  box-sizing: border-box;
+  -webkit-user-drag: none;
+}
+
+svg * {
+  pointer-events: none;
+}
+
+img,
+img *,
+svg,
+svg * {
+  user-select: none;
+}
+
+@import "./layout";

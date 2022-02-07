@@ -1,0 +1,14 @@
+/*  Flex-Wrap ↓ */
+.flexWrap {
+  flex-wrap: wrap;
+}
+
+.flexNoWrap {
+  flex-wrap: nowrap;
+}
+
+.flexWrapReverse {
+  flex-wrap: wrap-reverse;
+}
+
+/*  Flex-Wrap ↑ */

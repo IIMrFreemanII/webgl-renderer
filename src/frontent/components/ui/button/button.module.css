@@ -1,0 +1,68 @@
+.button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 24px;
+  column-gap: 8px;
+  border: none;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  min-width: fit-content;
+  background: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.button.isDisabled {
+  cursor: default;
+}
+
+/* Arrow ↑ */
+
+/* Primary Appearance ↓ */
+.primary {
+  color: var(--button-primary-color);
+  background: var(--button-primary-background);
+}
+
+.primary * {
+  color: var(--button-primary-color);
+}
+
+.primary:hover {
+  background: var(--button-primary-hover-background);
+}
+
+.primary:focus {
+  background: var(--button-primary-focus-background);
+}
+
+.primary:active {
+  background: var(--button-primary-active-background);
+}
+
+.primary:disabled {
+  color: var(--button-primary-disabled-color);
+  background: var(--button-primary-disabled-background);
+}
+
+/* Primary Appearance ↑ */
+
+/* Image Button Appearance ↓ */
+.imageBtn {
+  padding: 0;
+  border-radius: 0;
+  column-gap: 0;
+}
+
+.imageBtn:not(.isDisabled):not(:hover):focus {
+  outline: -webkit-focus-ring-color auto 1px;
+}
+
+/* Image Button Appearance ↑ */

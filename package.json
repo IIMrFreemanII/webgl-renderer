@@ -2,25 +2,13 @@
   "name": "webgl-renderer",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.13",
-    "@types/react": "^17.0.20",
-    "@types/react-dom": "^17.0.9",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "5.0.0",
-    "typescript": "^4.4.2",
-    "web-vitals": "^2.1.0"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --ignore-path .gitignore \"**/*.+(mdx|js|json|ts|tsx|scss|css)\"",
+    "prettier-format": "npm run prettier -- --write"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +27,32 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "web-vitals": "^2.1.0",
+    "benchmark": "^2.1.4",
+    "classnames": "^2.3.1",
+    "cuid": "^2.1.8",
+    "eventemitter3": "^4.0.7",
+    "gl-matrix": "^3.4.3",
+    "rxjs": "^7.4.0",
+    "three": "^0.135.0",
+    "twgl.js": "^4.21.2"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^17.0.20",
+    "@types/react-dom": "^17.0.9",
+    "@types/benchmark": "^2.1.1",
+    "@types/eventemitter3": "^2.0.2",
+    "typescript": "^4.4.2",
+    "prettier": "^2.5.1",
+    "react-scripts": "5.0.0"
   }
 }

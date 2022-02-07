@@ -1,0 +1,26 @@
+/*  Border-Radius ↓ */
+.br0 {
+  border-radius: var(--palette-border-radius-0);
+}
+
+.br1 {
+  border-radius: var(--palette-border-radius-1);
+}
+
+.br2 {
+  border-radius: var(--palette-border-radius-2);
+}
+
+.br3 {
+  border-radius: var(--palette-border-radius-3);
+}
+
+.br4 {
+  border-radius: var(--palette-border-radius-4);
+}
+
+.br5 {
+  border-radius: var(--palette-border-radius-5);
+}
+
+/*  Border-Radius ↑ */

@@ -1,0 +1,22 @@
+/*  Position ↓ */
+.posStatic {
+  position: static;
+}
+
+.posRel {
+  position: relative;
+}
+
+.posAbs {
+  position: absolute;
+}
+
+.posFixed {
+  position: fixed;
+}
+
+.posSticky {
+  position: static;
+}
+
+/*  Position ↑ */

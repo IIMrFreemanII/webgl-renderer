@@ -1,0 +1,34 @@
+.container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--palette-border-radius-2);
+  background-color: var(--pallete-background-darker);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background-color: var(--pallete-background-darker);
+}
+
+.header svg {
+  width: 24px;
+  height: 24px;
+}
+
+.dragZone {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 100%;
+  transform: translateX(50%);
+}
+
+.dragZone:hover {
+  cursor: ew-resize;
+  background-color: #415a77;
+}

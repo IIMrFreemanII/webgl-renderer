@@ -1,0 +1,18 @@
+/*  Display ↓ */
+.dInline {
+  display: inline;
+}
+
+.dFlex {
+  display: flex;
+}
+
+.dBlock {
+  display: block;
+}
+
+.dGrid {
+  display: grid;
+}
+
+/*  Display ↑ */

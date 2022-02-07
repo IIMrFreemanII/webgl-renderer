@@ -1,0 +1,18 @@
+/*  Flex ↓ */
+.flex00 {
+  flex: 0 0;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.flex01 {
+  flex: 0 1;
+}
+
+.flex11 {
+  flex: 1 1;
+}
+
+/*  Flex ↑ */

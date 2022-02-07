@@ -1,0 +1,55 @@
+.container {
+  position: absolute;
+  display: flex;
+}
+
+.top {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  width: 85%;
+}
+
+.bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  width: 85%;
+}
+
+.top,
+.bottom {
+  cursor: ns-resize;
+}
+
+.top .icon,
+.bottom .icon {
+  transform: rotateZ(90deg);
+}
+
+.right {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  height: 85%;
+}
+
+.left {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  height: 85%;
+}
+
+.right,
+.left {
+  cursor: ew-resize;
+}

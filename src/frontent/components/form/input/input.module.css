@@ -1,0 +1,96 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  border-radius: var(--input-border-radius);
+  background: var(--input-background);
+  border: 1px solid var(--input-border);
+}
+
+.inputWrapper:focus-within {
+  border-color: var(--input-border);
+}
+
+/*.inputWrapper.filled {*/
+/*  border-color: var(--input-filled-border-color);*/
+/*}*/
+
+.inputWrapper.textarea {
+  min-height: 150px;
+  max-height: 150px;
+}
+
+.inputWrapper.hasStatusLine {
+  padding-left: 8px;
+}
+
+/* TODO: add disable styles for input */
+.inputWrapper.disabled {
+  opacity: 0.5;
+}
+
+.input {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  resize: none;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  caret-color: var(--input-caret);
+  color: var(--input-color);
+}
+
+.input::placeholder {
+  color: var(--input-color);
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.isNotTextEditable {
+  cursor: default;
+  caret-color: transparent;
+}
+
+.statusLine {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+  height: 75%;
+  width: 3px;
+  border-radius: 6px 3px 3px 6px;
+}
+
+/* Sizes ↓ */
+.large {
+  padding: 2px;
+}
+
+.big {
+  padding: 2px;
+}
+
+.medium {
+  padding: 2px;
+}
+
+.small {
+  padding: 2px;
+}
+
+/* Sizes ↑ */

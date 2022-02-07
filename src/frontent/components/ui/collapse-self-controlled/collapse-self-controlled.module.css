@@ -1,0 +1,22 @@
+.container {
+  user-select: none;
+  display: inline-block;
+}
+
+.container.clickable {
+  cursor: pointer;
+}
+
+.contentObserver {
+  display: flex;
+  flex-direction: column;
+  transition-property: max-height;
+  transition-timing-function: ease-in-out;
+}
+
+.opening,
+.closing,
+.closed {
+  overflow: hidden;
+  max-height: 0;
+}

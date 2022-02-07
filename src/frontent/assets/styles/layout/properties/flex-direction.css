@@ -1,0 +1,18 @@
+/*  Flex-Direction ↓ */
+.flexDirRow {
+  flex-direction: row;
+}
+
+.flexDirRowReverse {
+  flex-direction: row-reverse;
+}
+
+.flexDirCol {
+  flex-direction: column;
+}
+
+.flexDirColReverse {
+  flex-direction: column-reverse;
+}
+
+/*  Flex-Direction ↑ */

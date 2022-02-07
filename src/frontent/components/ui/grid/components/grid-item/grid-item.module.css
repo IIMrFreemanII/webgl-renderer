@@ -1,0 +1,9 @@
+.gridItem {
+  transition: transform 200ms ease-in-out, height 200ms ease-in-out, width 200ms ease-in-out;
+  background-color: var(--pallete-background-darker);
+  border: var(--pallete-border-darker);
+}
+
+.gridItemContent {
+  overflow: hidden auto;
+}

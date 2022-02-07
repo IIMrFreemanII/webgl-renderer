@@ -1,0 +1,176 @@
+/*
+
+  namings:
+
+  {N} - number from 0-5 inclusively
+
+  p{N} - full padding
+
+  pT{N} - top padding
+  pR{N} - right padding
+  pB{N} - bottom padding
+  pL{N} - left padding
+
+  pTB{N} - top/bottom padding
+  pRL{N} - right/left padding
+
+*/
+
+/*  Padding ↓ */
+.p0 {
+  padding: var(--palette-padding-0);
+}
+
+.p1 {
+  padding: var(--palette-padding-1);
+}
+
+.p2 {
+  padding: var(--palette-padding-2);
+}
+
+.p3 {
+  padding: var(--palette-padding-3);
+}
+
+.p4 {
+  padding: var(--palette-padding-4);
+}
+
+.p5 {
+  padding: var(--palette-padding-5);
+}
+
+/*  Padding ↑ */
+
+/*  Padding-Top ↓ */
+.pT0,
+.pTB0 {
+  padding-top: var(--palette-padding-0);
+}
+
+.pT1,
+.pTB1 {
+  padding-top: var(--palette-padding-1);
+}
+
+.pT2,
+.pTB2 {
+  padding-top: var(--palette-padding-2);
+}
+
+.pT3,
+.pTB3 {
+  padding-top: var(--palette-padding-3);
+}
+
+.pT4,
+.pTB4 {
+  padding-top: var(--palette-padding-4);
+}
+
+.pT5,
+.pTB5 {
+  padding-top: var(--palette-padding-5);
+}
+
+/*  Padding-Top ↑ */
+
+/*  Padding-Right ↓ */
+.pR0,
+.pRL0 {
+  padding-right: var(--palette-padding-0);
+}
+
+.pR1,
+.pRL1 {
+  padding-right: var(--palette-padding-1);
+}
+
+.pR2,
+.pRL2 {
+  padding-right: var(--palette-padding-2);
+}
+
+.pR3,
+.pRL3 {
+  padding-right: var(--palette-padding-3);
+}
+
+.pR4,
+.pRL4 {
+  padding-right: var(--palette-padding-4);
+}
+
+.pR5,
+.pRL5 {
+  padding-right: var(--palette-padding-5);
+}
+
+/*  Padding-Right ↑ */
+
+/*  Padding-Bottom ↓ */
+.pB0,
+.pTB0 {
+  padding-bottom: var(--palette-padding-0);
+}
+
+.pB1,
+.pTB1 {
+  padding-bottom: var(--palette-padding-1);
+}
+
+.pB2,
+.pTB2 {
+  padding-bottom: var(--palette-padding-2);
+}
+
+.pB3,
+.pTB3 {
+  padding-bottom: var(--palette-padding-3);
+}
+
+.pB4,
+.pTB4 {
+  padding-bottom: var(--palette-padding-4);
+}
+
+.pB5,
+.pTB5 {
+  padding-bottom: var(--palette-padding-5);
+}
+
+/*  Padding-Bottom ↑ */
+
+/*  Padding-Left ↓ */
+.pL0,
+.pRL0 {
+  padding-left: var(--palette-padding-0);
+}
+
+.pL1,
+.pRL1 {
+  padding-left: var(--palette-padding-1);
+}
+
+.pL2,
+.pRL2 {
+  padding-left: var(--palette-padding-2);
+}
+
+.pL3,
+.pRL3 {
+  padding-left: var(--palette-padding-3);
+}
+
+.pL4,
+.pRL4 {
+  padding-left: var(--palette-padding-4);
+}
+
+.pL5,
+.pRL5 {
+  padding-left: var(--palette-padding-5);
+}
+
+/*  Padding-Bottom ↑ */

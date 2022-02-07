@@ -1,0 +1,15 @@
+.container {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.treeWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  row-gap: 10px;
+  overflow: auto;
+}

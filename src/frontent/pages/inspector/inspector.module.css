@@ -1,0 +1,22 @@
+.container {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--palette-border-radius-2);
+  background-color: var(--pallete-background-darker);
+}
+
+.header {
+  padding: 8px 10px;
+  background-color: var(--pallete-background-darker);
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 4px;
+  row-gap: 8px;
+}

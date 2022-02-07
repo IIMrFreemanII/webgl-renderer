@@ -1,0 +1,275 @@
+/*  Scroll Styling ↓ */
+.addScrollStyles::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.addScrollStyles::-webkit-scrollbar-thumb {
+  background-color: var(--global-scroll-background-color);
+  border-radius: 15px;
+}
+
+.addScrollStyles::-webkit-scrollbar-thumb:hover {
+  background-color: var(--global-scroll-background-hover-color);
+}
+
+.addScrollStyles::-webkit-scrollbar-thumb:active {
+  background-color: var(--global-scroll-background-active-color);
+}
+
+.addScrollStyles::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.hideScrollBar::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
+.hideOverflow {
+  overflow: hidden;
+}
+
+/*  Scroll Styling ↑ */
+
+/*  Text-Overflowed Styling ↓ */
+.applySingleOverflow {
+  display: inline-block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  min-width: initial;
+  max-width: 100%;
+}
+
+.applyMultiOverflow {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  word-break: break-word !important;
+  min-width: initial !important;
+}
+
+/*  Text-Overflowed Styling ↑ */
+
+/* Misc Styling ↓ */
+/* make element invisible but keep it's sizes, position and remove ability to interact with it */
+.hideElement {
+  pointer-events: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  cursor: initial !important;
+}
+
+/* make element invisible but leave the possibility of interaction */
+.maskElement {
+  position: absolute !important;
+  opacity: 0 !important;
+}
+
+/* make element disappear */
+.deleteElement {
+  display: none !important;
+}
+
+/* Misc Styling ↑ */
+
+/* SVG smart status Styling ↓ */
+.whiteSmartSVG path[stroke] {
+  stroke: #fff;
+}
+
+.whiteSmartSVG path[fill] {
+  fill: #fff;
+}
+
+.blackSmartSVG path[stroke] {
+  stroke: #000;
+}
+
+.blackSmartSVG path[fill] {
+  fill: #000;
+}
+
+.primarySmartSVG path[stroke] {
+  stroke: var(--palette-primary);
+}
+
+.primarySmartSVG path[fill] {
+  fill: var(--palette-primary);
+}
+
+.successSmartSVG path[stroke] {
+  stroke: var(--palette-success);
+}
+
+.successSmartSVG path[fill] {
+  fill: var(--palette-success);
+}
+
+.warningSmartSVG path[stroke] {
+  stroke: var(--palette-warning);
+}
+
+.warningSmartSVG path[fill] {
+  fill: var(--palette-warning);
+}
+
+.errorSmartSVG path[stroke] {
+  stroke: var(--palette-error);
+}
+
+.errorSmartSVG path[fill] {
+  fill: var(--palette-error);
+}
+
+/* SVG smart status Styling ↑ */
+
+/* SVG fill status Styling ↓ */
+.whiteFillSVG *,
+.whiteBothSVG * {
+  fill: #fff;
+}
+
+.blackFillSVG *,
+.blackBothSVG * {
+  fill: #000;
+}
+
+.primaryFillSVG *,
+.primaryBothSVG * {
+  fill: var(--palette-primary);
+}
+
+.successFillSVG *,
+.successBothSVG * {
+  fill: var(--palette-success);
+}
+
+.warningFillSVG *,
+.warningBothSVG * {
+  fill: var(--palette-warning);
+}
+
+.errorFillSVG *,
+.errorBothSVG * {
+  fill: var(--palette-error);
+}
+
+/* SVG fill status Styling ↑ */
+
+/* SVG stroke status Styling ↓ */
+.whiteStrokeSVG *,
+.whiteBothSVG * {
+  stroke: #fff;
+}
+
+.blackStrokeSVG *,
+.blackBothSVG * {
+  stroke: #000;
+}
+
+.primaryStrokeSVG *,
+.primaryBothSVG * {
+  stroke: var(--palette-primary);
+}
+
+.successStrokeSVG *,
+.successBothSVG * {
+  stroke: var(--palette-success);
+}
+
+.warningStrokeSVG *,
+.warningBothSVG * {
+  stroke: var(--palette-warning);
+}
+
+.errorStrokeSVG *,
+.errorBothSVG * {
+  stroke: var(--palette-error);
+}
+
+/* SVG fill status Styling ↑ */
+
+/* Background status Styling ↓ */
+.whiteBackground {
+  background-color: #fff !important;
+}
+
+.blackBackground {
+  background-color: #000 !important;
+}
+
+.primaryBackground {
+  background-color: var(--palette-primary) !important;
+}
+
+.successBackground {
+  background-color: var(--palette-success) !important;
+}
+
+.warningBackground {
+  background-color: var(--palette-warning) !important;
+}
+
+.errorBackground {
+  background-color: var(--palette-error) !important;
+}
+
+/* Background status Styling ↑ */
+
+/* Border status Styling ↓ */
+.whiteBorder {
+  border-color: #fff !important;
+}
+
+.blackBorder {
+  border-color: #000 !important;
+}
+
+.primaryBorder {
+  border-color: var(--palette-primary) !important;
+}
+
+.successBorder {
+  border-color: var(--palette-success) !important;
+}
+
+.warningBorder {
+  border-color: var(--palette-warning) !important;
+}
+
+.errorBorder {
+  border-color: var(--palette-error) !important;
+}
+
+/* Border status Styling ↑ */
+
+/* Text status Styling ↓ */
+.whiteText {
+  color: #fff !important;
+}
+
+.blackText {
+  color: #000 !important;
+}
+
+.primaryText {
+  color: var(--palette-primary) !important;
+}
+
+.successText {
+  color: var(--palette-success) !important;
+}
+
+.warningText {
+  color: var(--palette-warning) !important;
+}
+
+.errorText {
+  color: var(--palette-error) !important;
+}
+
+/* Text status Styling ↑ */

@@ -1,0 +1,127 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.input {
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+}
+
+.checkboxWrap {
+  display: grid;
+  place-items: center;
+  padding: 2px;
+  border-radius: 5px;
+  border: 1px solid var(--checkbox-border);
+  background: var(--checkbox-wrapper-background);
+}
+
+.checkboxImageWrapper {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  border-radius: 5px;
+  background: var(--checkbox-wrapper-background);
+}
+
+/* Placement */
+.inputWrapper.right {
+  flex-direction: row;
+}
+
+.inputWrapper.left {
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+/* CheckBox Sizes */
+.checkboxWrap.large {
+  min-height: 20px;
+  min-width: 20px;
+}
+
+.checkboxImage.large {
+  width: 6px;
+  height: 6px;
+}
+
+.checkboxWrap.big {
+  min-height: 20px;
+  min-width: 20px;
+}
+
+.checkboxImage.big {
+  width: 6px;
+  height: 6px;
+}
+
+.checkboxWrap.medium {
+  min-height: 20px;
+  min-width: 20px;
+}
+
+.checkboxImage.medium {
+  width: 6px;
+  height: 6px;
+}
+
+.checkboxWrap.small {
+  min-height: 20px;
+  min-width: 20px;
+}
+
+.checkboxImage.small {
+  width: 6px;
+  height: 6px;
+}
+
+/* Disabled */
+.input:disabled {
+  cursor: initial;
+}
+
+/* Hover */
+.inputWrapper:hover .input:not(:disabled) ~ .checkboxWrap {
+  border-color: var(--checkbox-border-hover);
+}
+
+/* Focus */
+.input:focus ~ .checkboxWrap {
+  border-color: var(--checkbox-border-focus);
+}
+
+/* Active */
+.input:active ~ .checkboxWrap {
+  border-color: var(--checkbox-border) !important;
+}
+
+.input:active ~ .checkboxWrap .checkboxImageWrapper {
+  background-color: var(--checkbox-icon-wrapper-checked-background);
+}
+
+/* Checked */
+.checkboxWrap.checked {
+  border-color: var(--checkbox-wrapper-checked-border-background);
+}
+
+.checkboxImageWrapper.checked {
+  background-color: var(--checkbox-icon-wrapper-checked-background);
+}
+
+.label.checked {
+  color: var(--checkbox-label-checked-color);
+}

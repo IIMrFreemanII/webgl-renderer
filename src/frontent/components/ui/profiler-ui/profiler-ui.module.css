@@ -1,0 +1,10 @@
+.container {
+  position: absolute;
+  width: 400px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.element {
+  margin: 10px;
+}

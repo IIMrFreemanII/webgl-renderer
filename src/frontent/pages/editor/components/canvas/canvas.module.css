@@ -1,0 +1,8 @@
+.container {
+  display: flex;
+  position: relative;
+  flex-grow: 1;
+  overflow: hidden;
+  background-color: var(--palette-background-primary);
+  border-radius: var(--palette-border-radius-medium);
+}

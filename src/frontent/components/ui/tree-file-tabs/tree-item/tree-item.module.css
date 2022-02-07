@@ -1,0 +1,68 @@
+.treeItem.nested {
+  margin-left: 12px;
+}
+
+.treeItemContent {
+  display: flex;
+  flex-direction: column;
+  row-gap: 6px;
+}
+
+/*.treeItem:global(.nest-level-0) .treeItemName {*/
+/*  color: red;*/
+/*}*/
+
+/*.treeItem:global(.nest-level-1) .treeItemName {*/
+/*  color: orange;*/
+/*}*/
+
+/*.treeItem:global(.nest-level-2) .treeItemName {*/
+/*  color: yellow;*/
+/*}*/
+
+/*.treeItem:global(.nest-level-3) .treeItemName {*/
+/*  color: green;*/
+/*}*/
+
+/*.treeItem:global(.nest-level-4) .treeItemName {*/
+/*  color: lightblue;*/
+/*}*/
+
+/*.treeItem:global(.nest-level-5) .treeItemName {*/
+/*  color: blue;*/
+/*}*/
+
+/*.treeItem:global(.nest-level-6) .treeItemName {*/
+/*  color: purple;*/
+/*}*/
+
+/*.treeItem:global(.nest-level-7) .treeItemName {*/
+/*  color: magenta;*/
+/*}*/
+
+.treeItemNameWrapper {
+  margin-right: 10px;
+}
+
+.treeItemNameWrapper:not(:last-child) {
+  margin-bottom: 4px;
+}
+
+.treeItemName {
+  padding-left: 12px;
+  position: relative;
+  white-space: nowrap;
+  word-break: keep-all;
+  color: var(--tree-file-tree-item-non-clickable-name);
+}
+
+.treeItemName.clickable {
+  user-select: none;
+  cursor: pointer;
+  color: var(--tree-file-tree-item-name);
+}
+
+.treeItemName.selected,
+.treeItemName.nestSelected {
+  color: var(--tree-file-tree-item-selected-name);
+}

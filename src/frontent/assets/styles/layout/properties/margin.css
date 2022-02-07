@@ -1,0 +1,176 @@
+/*
+
+  namings:
+
+  {N} - number from 0-5 inclusively
+
+  m{N} - full margin
+
+  mT{N} - top margin
+  mR{N} - right margin
+  mB{N} - bottom margin
+  mL{N} - left margin
+
+  mTB{N} - top/bottom margin
+  mRL{N} - right/left margin
+
+*/
+
+/*  Margin ↓ */
+.m0 {
+  margin: var(--palette-margin-0);
+}
+
+.m1 {
+  margin: var(--palette-margin-1);
+}
+
+.m2 {
+  margin: var(--palette-margin-2);
+}
+
+.m3 {
+  margin: var(--palette-margin-3);
+}
+
+.m4 {
+  margin: var(--palette-margin-4);
+}
+
+.m5 {
+  margin: var(--palette-margin-5);
+}
+
+/*  Margin ↑ */
+
+/*  Margin-Top ↓ */
+.mT0,
+.mTB0 {
+  margin-top: var(--palette-margin-0);
+}
+
+.mT1,
+.mTB1 {
+  margin-top: var(--palette-margin-1);
+}
+
+.mT2,
+.mTB2 {
+  margin-top: var(--palette-margin-2);
+}
+
+.mT3,
+.mTB3 {
+  margin-top: var(--palette-margin-3);
+}
+
+.mT4,
+.mTB4 {
+  margin-top: var(--palette-margin-4);
+}
+
+.mT5,
+.mTB5 {
+  margin-top: var(--palette-margin-5);
+}
+
+/*  Margin-Top ↑ */
+
+/*  Margin-Right ↓ */
+.mR0,
+.mRL0 {
+  margin-right: var(--palette-margin-0);
+}
+
+.mR1,
+.mRL1 {
+  margin-right: var(--palette-margin-1);
+}
+
+.mR2,
+.mRL2 {
+  margin-right: var(--palette-margin-2);
+}
+
+.mR3,
+.mRL3 {
+  margin-right: var(--palette-margin-3);
+}
+
+.m4,
+.mRL4 {
+  margin-right: var(--palette-margin-4);
+}
+
+.mR5,
+.mRL5 {
+  margin-right: var(--palette-margin-5);
+}
+
+/*  Margin-Right ↑ */
+
+/*  Margin-Bottom ↓ */
+.mB0,
+.mTB0 {
+  margin-bottom: var(--palette-margin-0);
+}
+
+.mB1,
+.mTB1 {
+  margin-bottom: var(--palette-margin-1);
+}
+
+.mB2,
+.mTB2 {
+  margin-bottom: var(--palette-margin-2);
+}
+
+.mB3,
+.mTB3 {
+  margin-bottom: var(--palette-margin-3);
+}
+
+.mB4,
+.mTB4 {
+  margin-bottom: var(--palette-margin-4);
+}
+
+.mB5,
+.mTB5 {
+  margin-bottom: var(--palette-margin-5);
+}
+
+/*  Margin-Bottom ↑ */
+
+/*  Margin-Left ↓ */
+.mL0,
+.mRL0 {
+  margin-left: var(--palette-margin-0);
+}
+
+.mL1,
+.mRL1 {
+  margin-left: var(--palette-margin-1);
+}
+
+.mL2,
+.mRL2 {
+  margin-left: var(--palette-margin-2);
+}
+
+.mL3,
+.mRL3 {
+  margin-left: var(--palette-margin-3);
+}
+
+.mL4,
+.mRL4 {
+  margin-left: var(--palette-margin-4);
+}
+
+.mL5,
+.mRL5 {
+  margin-left: var(--palette-margin-5);
+}
+
+/*  Margin-Bottom ↑ */

@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  align-items: center;
+  padding: 2px 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Placement */
+.container.left {
+  justify-content: flex-start;
+}
+
+.container.center {
+  justify-content: center;
+}
+
+.container.right {
+  justify-content: flex-end;
+}
+
+/* Container Sizes */
+.container.large {
+  font-size: 14px;
+  height: 32px;
+}
+
+.container.big {
+  font-size: 13px;
+  height: 28px;
+}
+
+.container.medium {
+  font-size: 12px;
+  height: 24px;
+}
+
+.container.small {
+  font-size: 12px;
+  height: 22px;
+}
+
+.container.tiny {
+  font-size: 11px;
+  height: 20px;
+}

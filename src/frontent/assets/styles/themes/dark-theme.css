@@ -1,0 +1,116 @@
+.darkTheme {
+  /* Color Palette ↓ */
+  --palette-base: #000;
+  --palette-base-opposite: #fff;
+
+  --pallete-background-default: #2f2f2f;
+  --pallete-background-lighter: #333333;
+  --pallete-background-darker: #272727;
+
+  --pallete-border-darker: 1px solid #1b1b1b;
+
+  --palette-text-default: var(--palette-base-opposite);
+
+  --palette-primary: #1068eb;
+
+  --palette-success: #087f5b;
+
+  --palette-warning: #e9a100;
+
+  --palette-error: #d40320;
+
+  --palette-font-weight-1: 400;
+  --palette-font-weight-2: 600;
+  --palette-font-weight-3: 800;
+
+  --palette-border-radius-0: 0;
+  --palette-border-radius-1: 4px;
+  --palette-border-radius-2: 8px;
+  --palette-border-radius-3: 12px;
+  --palette-border-radius-4: 16px;
+  --palette-border-radius-5: 20px;
+
+  --palette-margin-0: 0;
+  --palette-margin-1: 4px;
+  --palette-margin-2: 8px;
+  --palette-margin-3: 12px;
+  --palette-margin-4: 16px;
+  --palette-margin-5: 20px;
+
+  --palette-padding-0: 0;
+  --palette-padding-1: 4px;
+  --palette-padding-2: 8px;
+  --palette-padding-3: 12px;
+  --palette-padding-4: 16px;
+  --palette-padding-5: 20px;
+
+  --palette-gap-0: 0;
+  --palette-gap-1: 4px;
+  --palette-gap-2: 8px;
+  --palette-gap-3: 12px;
+  --palette-gap-4: 16px;
+  --palette-gap-5: 20px;
+
+  /* Color Palette ↑ */
+
+  /* ------------------------------------------------------------------------------------------ */
+
+  /* Global Styles ↓ */
+  --global-scroll-background-color: #345b63;
+  --global-scroll-background-hover-color: #152d35;
+  --global-scroll-background-active-color: #112031;
+  /* Global ↑ */
+
+  /* ------ FORM COMPONENTS ↓ ------ */
+
+  /* Checkbox ↓ */
+  --checkbox-label-checked-color: var(--palette-text-secondary);
+
+  --checkbox-wrapper-background: var(--palette-base);
+  --checkbox-icon-wrapper-checked-background: var(--palette-primary);
+
+  /* Checkbox Unique Styles ↓ */
+  --checkbox-border: #a7adc4;
+  --checkbox-border-hover: #00cac4;
+  --checkbox-border-focus: #00cac4;
+  --checkbox-wrapper-checked-border-background: #00cac4;
+  /* Checkbox ↑ */
+
+  /* Input Styles ↓ */
+  --input-border-radius: var(--palette-border-radius-1);
+  --input-color: var(--palette-text-tertiary);
+  --input-background: var(--pallete-background-default);
+  --input-border: #444444;
+  --input-caret: var(--palette-text-secondary);
+  --input-filled-border-color: var(--palette-primary);
+  /* Input ↑ */
+
+  /* ------ FORM COMPONENTS ↑ ------ */
+
+  /* ------ UI COMPONENTS ↓ ------ */
+
+  /* Button ↓ */
+  /* Button Primary Appearance */
+  --button-primary-color: var(--palette-text-tertiary);
+  --button-primary-background: var(--palette-primary);
+
+  --button-primary-hover-background: var(--palette-primary-hover);
+
+  --button-primary-focus-background: var(--palette-primary-focus);
+
+  --button-primary-active-background: var(--palette-primary-active);
+
+  --button-primary-disabled-background: var(--palette-primary-disabled);
+  --button-primary-disabled-color: var(--palette-text-tertiary-disabled);
+
+  /* Button ↑ */
+
+  /* TreeFileTabs ↓ */
+  --tree-file-tree-item-non-clickable-name: grey;
+  --tree-file-tree-item-name: red;
+  --tree-file-tree-item-selected-name: orange;
+  /* TreeFileTabs  Unique Styles */
+  /* TreeFileTabs ↑ */
+
+  /* ------ UI COMPONENTS ↑ ------ */
+}
