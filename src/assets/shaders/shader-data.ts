@@ -1,6 +1,10 @@
-export interface ShaderData<A extends [], T extends []> {
-  vertex: string;
-  fragment: string;
-  attributes: A;
+export interface Uniform {
+  name: string;
+  type: string;
+  value: any;
+  setter?: (value: any) => void;
+}
+
+export interface ShaderData<T extends []> {
   uniforms: T;
 }

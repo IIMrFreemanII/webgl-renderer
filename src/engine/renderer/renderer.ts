@@ -1,15 +1,17 @@
-import { glMatrix, mat3, mat4, vec2, vec3 } from "gl-matrix";
+import { mat3, mat4, vec2 } from "gl-matrix";
 import { Shader } from "./shader";
 
-// import vertShader from "assets/shaders/default.vert";
-// import vertShader from "assets/shaders/default2D.vert";
-// import fragShader from "assets/shaders/default2D.frag";
-// import fragShader from "assets/shaders/default.frag";
-import { vertex, fragment } from "assets/shaders/default-2d.shader";
+import {
+  vertex,
+  fragment,
+  Default2DAttribs,
+  Default2DUniforms,
+} from "assets/shaders/default-2d.shader";
 import { Mesh } from "./mesh";
 import { UniformBuffer } from "./buffer";
+import { Rect } from "./rect";
 
-const getQuad = (w: number, h: number, x = 0, y = 0) => {
+export const getQuadVertices = (w: number, h: number, x = 0, y = 0) => {
   return [x, y, x, h + y, w + x, h + y, x, y, w + x, h + y, w + x, y];
 };
 
@@ -40,12 +42,19 @@ export class Renderer {
     return vec2.fromValues(this.canvas.width, this.canvas.height);
   }
 
-  submit(mesh: Mesh, shader: Shader) {
+  submit<A, S>(mesh: Mesh<A, Shader<S>>) {
     mesh.vertexArray.bind();
-    shader.bind();
-    shader.setUniforms();
+    mesh.shader.bind();
+    mesh.shader.setUniforms();
 
     this.drawArrays(mesh);
+  }
+
+  submitRect(rect: Rect) {
+    rect.mesh.vertexArray.bind();
+    rect.mesh.shader.bind();
+    rect.mesh.shader.setUniforms();
+    this.drawArrays(rect.mesh);
   }
 
   begin(perspective: mat4, view: mat4) {
@@ -61,18 +70,27 @@ export class Renderer {
   end() {}
 
   start() {
-    const shader = new Shader(this.gl, "default2D", vertex, fragment);
-    // const quad = new Mesh({
-    //   a_position: [0, 0, 30, 0, 0, 150, 0, 150, 30, 0, 30, 150],
-    // });
+    const shader = new Shader<Default2DUniforms>(this.gl, "default2D", vertex, fragment);
     const quads = [
       {
-        mesh: new Mesh(this.gl, { a_position: getQuad(1, 1) }),
+        mesh: new Mesh<Default2DAttribs, Shader<Default2DUniforms>>(
+          this.gl,
+          {
+            a_position: { data: getQuadVertices(1, 1), type: "vec2" },
+          },
+          shader,
+        ),
         x: 100,
         y: 200,
       },
       {
-        mesh: new Mesh(this.gl, { a_position: getQuad(1, 1) }),
+        mesh: new Mesh<Default2DAttribs, Shader<Default2DUniforms>>(
+          this.gl,
+          {
+            a_position: { data: getQuadVertices(1, 1), type: "vec2" },
+          },
+          shader,
+        ),
         x: 300,
         y: 200,
       },
@@ -89,7 +107,7 @@ export class Renderer {
     // this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer);
     // this.gl.bufferData(
     //   this.gl.ARRAY_BUFFER,
-    //   new Float32Array(getQuad(100, 100)),
+    //   new Float32Array(getQuadVertices(100, 100)),
     //   this.gl.STATIC_DRAW,
     // );
     //
@@ -114,7 +132,7 @@ export class Renderer {
       //
 
       quads.forEach((quad) => {
-        // quad.mesh.setData("a_position", getQuad(100 + size[0], 100 + size[1]));
+        // quad.mesh.setData("a_position", getQuadVertices(100 + size[0], 100 + size[1]));
         const model = mat3.create();
         mat3.translate(model, model, vec2.fromValues(quad.x, quad.y));
         mat3.scale(model, model, size);
@@ -126,11 +144,11 @@ export class Renderer {
         const projection = mat3.create();
         mat3.projection(projection, this.canvas.width, this.canvas.height);
 
-        shader.bind();
-        shader.uniforms.projection.value = projection;
-        shader.uniforms.view.value = view;
-        shader.uniforms.model.value = model;
-        shader.setUniforms();
+        quad.mesh.shader.bind();
+        quad.mesh.shader.uniforms.projection.value = projection;
+        quad.mesh.shader.uniforms.view.value = view;
+        quad.mesh.shader.uniforms.model.value = model;
+        quad.mesh.shader.setUniforms();
 
         quad.mesh.vertexArray.bind();
         this.drawArrays(quad.mesh);
@@ -143,11 +161,11 @@ export class Renderer {
     requestAnimationFrame(animate);
   }
 
-  drawArrays(mesh: Mesh) {
+  drawArrays<T, S>(mesh: Mesh<T, Shader<S>>) {
     this.gl.drawArrays(mesh.drawMode, 0, mesh.count);
   }
 
-  drawArraysInstanced(mesh: Mesh, instancesCount: number) {
+  drawArraysInstanced<T, S>(mesh: Mesh<T, Shader<S>>, instancesCount: number) {
     this.gl.drawArraysInstanced(mesh.drawMode, 0, mesh.count, instancesCount);
   }
 

@@ -1,25 +1,24 @@
 import { SHADER_DATA_TYPE_TO_DEFAULT_VALUE, ShaderDataType } from "./webgl-constants";
-import { Renderer } from "./renderer";
 
 export type Uniforms = Record<
   string,
   {
     type: ShaderDataType;
     value: any;
-    setter: (value: any) => void;
+    setter?: (value: any) => void;
   }
 >;
 
 export type UniformBlock = { name: string; index: number; target: number };
 
-export class Shader {
+export class Shader<T> {
   public readonly name: string;
   public uniformBlocks: UniformBlock[];
-  public uniforms: Uniforms;
+  public uniforms: T;
   private setters: (() => void)[] = [];
 
+  public readonly program: WebGLProgram;
   private readonly gl: WebGL2RenderingContext;
-  private readonly program: WebGLProgram;
 
   constructor(gl: WebGL2RenderingContext, name: string, vertSrc: string, fragScr: string) {
     this.gl = gl;
@@ -102,7 +101,7 @@ export class Shader {
     });
   }
 
-  private extractUniforms(vertSrc: string, fragSrc: string): Uniforms {
+  private extractUniforms(vertSrc: string, fragSrc: string): T {
     const vertUniforms = vertSrc.match(/uniform \w+ \w+/g) || [];
     const fragUniforms = fragSrc.match(/uniform \w+ \w+/g) || [];
 
@@ -126,7 +125,7 @@ export class Shader {
       this.setters.push(setter as any);
 
       return result;
-    }, {});
+    }, {}) as never;
   }
 
   public getAttribLocation(name: string) {

@@ -1,3 +1,31 @@
+export type Default2DAttribs = {
+  a_position: {
+    data: number[];
+    type: "vec2";
+  };
+  // a_texcoord?: {
+  //   data: number[];
+  //   type: "vec2";
+  // };
+};
+export type Default2DUniforms = {
+  projection: {
+    type: "mat3";
+    value: ArrayLike<number>;
+    setter?: (value: number[]) => void;
+  };
+  view: {
+    type: "mat3";
+    value: ArrayLike<number>;
+    setter?: (value: number[]) => void;
+  };
+  model: {
+    type: "mat3";
+    value: ArrayLike<number>;
+    setter?: (value: number[]) => void;
+  };
+};
+
 export const vertex = `#version 300 es
 
 layout (location = 0) in vec2 a_position;
