@@ -6,18 +6,22 @@ import { CANVAS_WRAPPER_ID } from "./canvas.constants";
 
 import styles from "./canvas.module.css";
 import { mainRenderer } from "engine/renderer";
-import { Rect } from "../../../../../engine/renderer/rect";
-import { mat3, vec2 } from "gl-matrix";
 
-const cameraPosition = vec2.fromValues(0, 0);
-const view = mat3.create();
-mat3.translate(view, view, cameraPosition);
-mat3.invert(view, view);
+const rect1 = mainRenderer.createRect({
+  width: 100,
+  height: 100,
+  x: 0,
+  y: 0,
+});
+
+const rect2 = mainRenderer.createRect({
+  width: 100,
+  height: 100,
+  x: 300,
+  y: 300,
+});
 
 export const Canvas = () => {
-  const [rects, setRects] = useState<Rect[]>([
-    new Rect(mainRenderer.gl, { width: 100, height: 100 }, { x: 100, y: 100 }),
-  ]);
   const { debounce } = useDebounce(50);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,16 +39,17 @@ export const Canvas = () => {
   });
 
   useEffect(() => {
-    rects.forEach((rect) => {
-      const projection = mat3.create();
-      mat3.projection(projection, mainRenderer.canvas.width, mainRenderer.canvas.height);
-
-      rect.mesh.shader.uniforms.model.value = rect.model;
-      rect.mesh.shader.uniforms.view.value = view;
-      rect.mesh.shader.uniforms.projection.value = projection;
-      mainRenderer.submitRect(rect);
+    requestAnimationFrame(function render() {
+      mainRenderer.renderRects();
+      console.log("render");
+      // requestAnimationFrame(render);
     });
-  }, [rects]);
+
+    // setTimeout(() => {
+    //   mainRenderer.renderRects();
+    //   console.log("render");
+    // }, 0);
+  }, []);
 
   return (
     <div id={CANVAS_WRAPPER_ID} className={styles.container} ref={containerRef}>

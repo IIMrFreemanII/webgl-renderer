@@ -1,14 +1,5 @@
 import { SHADER_DATA_TYPE_TO_DEFAULT_VALUE, ShaderDataType } from "./webgl-constants";
 
-export type Uniforms = Record<
-  string,
-  {
-    type: ShaderDataType;
-    value: any;
-    setter?: (value: any) => void;
-  }
->;
-
 export type UniformBlock = { name: string; index: number; target: number };
 
 export class Shader<T> {

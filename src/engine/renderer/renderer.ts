@@ -9,7 +9,7 @@ import {
 } from "assets/shaders/default-2d.shader";
 import { Mesh } from "./mesh";
 import { UniformBuffer } from "./buffer";
-import { Rect } from "./rect";
+import { Rect, RectProps } from "./rect";
 
 export const getQuadVertices = (w: number, h: number, x = 0, y = 0) => {
   return [x, y, x, h + y, w + x, h + y, x, y, w + x, h + y, w + x, y];
@@ -32,17 +32,34 @@ export class Renderer {
   gl = this.canvas.getContext("webgl2") as WebGL2RenderingContext;
   ubos: UniformBufferObjects;
 
+  rects: Rect[] = [];
+
   setSize(width: number, height: number) {
     this.canvas.width = width;
     this.canvas.height = height;
     this.gl.viewport(0, 0, width, height);
+
+    mat3.projection(projection, width, height);
   }
 
   getSize(): vec2 {
     return vec2.fromValues(this.canvas.width, this.canvas.height);
   }
 
-  submit<A, S>(mesh: Mesh<A, Shader<S>>) {
+  createRect(props: RectProps): Rect {
+    const rect = new Rect(props);
+    this.rects.push(rect);
+    return rect;
+  }
+
+  renderRects() {
+    this.rects.forEach((rect) => {
+      rect.setUniforms();
+      mainRenderer.submitRect(rect);
+    });
+  }
+
+  submit<T extends object, S extends Shader<any>>(mesh: Mesh<T, S>) {
     mesh.vertexArray.bind();
     mesh.shader.bind();
     mesh.shader.setUniforms();
@@ -145,9 +162,9 @@ export class Renderer {
         mat3.projection(projection, this.canvas.width, this.canvas.height);
 
         quad.mesh.shader.bind();
-        quad.mesh.shader.uniforms.projection.value = projection;
-        quad.mesh.shader.uniforms.view.value = view;
-        quad.mesh.shader.uniforms.model.value = model;
+        quad.mesh.shader.uniforms.u_projection.value = projection;
+        quad.mesh.shader.uniforms.u_view.value = view;
+        quad.mesh.shader.uniforms.u_model.value = model;
         quad.mesh.shader.setUniforms();
 
         quad.mesh.vertexArray.bind();
@@ -161,11 +178,14 @@ export class Renderer {
     requestAnimationFrame(animate);
   }
 
-  drawArrays<T, S>(mesh: Mesh<T, Shader<S>>) {
+  drawArrays<T extends object, S extends Shader<any>>(mesh: Mesh<T, S>) {
     this.gl.drawArrays(mesh.drawMode, 0, mesh.count);
   }
 
-  drawArraysInstanced<T, S>(mesh: Mesh<T, Shader<S>>, instancesCount: number) {
+  drawArraysInstanced<T extends object, S extends Shader<any>>(
+    mesh: Mesh<T, S>,
+    instancesCount: number,
+  ) {
     this.gl.drawArraysInstanced(mesh.drawMode, 0, mesh.count, instancesCount);
   }
 
@@ -181,3 +201,25 @@ export class Renderer {
 }
 
 export const mainRenderer = new Renderer();
+
+const cameraPosition = vec2.fromValues(0, 0);
+export const view = mat3.create();
+mat3.translate(view, view, cameraPosition);
+mat3.invert(view, view);
+
+export const projection = mat3.create();
+mat3.projection(projection, mainRenderer.canvas.width, mainRenderer.canvas.height);
+
+export const defaultShader2D = new Shader<Default2DUniforms>(
+  mainRenderer.gl,
+  "default2D",
+  vertex,
+  fragment,
+);
+export const rectMesh = new Mesh<Default2DAttribs, Shader<Default2DUniforms>>(
+  mainRenderer.gl,
+  {
+    a_position: { data: getQuadVertices(1, 1), type: "vec2" },
+  },
+  defaultShader2D,
+);

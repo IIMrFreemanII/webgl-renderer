@@ -29,30 +29,32 @@
     ]
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "web-vitals": "^2.1.0",
     "benchmark": "^2.1.4",
     "classnames": "^2.3.1",
     "cuid": "^2.1.8",
     "eventemitter3": "^4.0.7",
     "gl-matrix": "^3.4.3",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "rxjs": "^7.4.0",
     "three": "^0.135.0",
-    "twgl.js": "^4.21.2"
+    "twgl.js": "^4.21.2",
+    "web-vitals": "^2.1.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "@types/benchmark": "^2.1.1",
+    "@types/eventemitter3": "^2.0.2",
     "@types/jest": "^27.0.1",
+    "@types/lodash": "^4.14.178",
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
-    "@types/benchmark": "^2.1.1",
-    "@types/eventemitter3": "^2.0.2",
-    "typescript": "^4.4.2",
     "prettier": "^2.5.1",
-    "react-scripts": "5.0.0"
+    "react-scripts": "5.0.0",
+    "typescript": "^4.4.2"
   }
 }

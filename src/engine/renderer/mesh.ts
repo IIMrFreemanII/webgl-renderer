@@ -2,7 +2,7 @@ import { BufferElement, BufferLayout, IndexBuffer, VertexBuffer } from "./buffer
 import { VertexArray } from "./vertex-array";
 import { Shader } from "./shader";
 
-export class Mesh<A, S extends Shader<any>> {
+export class Mesh<A extends object, S extends Shader<any>> {
   gl: WebGL2RenderingContext;
   vertexAttribs: A;
   shader: S;
