@@ -1,5 +1,4 @@
 import { SHADER_DATA_TYPE_SIZE, ShaderDataType } from "./webgl-constants";
-import { Renderer } from "./renderer";
 
 export class BufferElement {
   name: string;
@@ -151,14 +150,14 @@ export class UniformBufferLayout {
       case "mat4":
         return 0;
       case "int":
+      case "bool":
+      case "sampler2D":
         return 0;
       case "ivec2":
         return 0;
       case "ivec3":
         return 4;
       case "ivec4":
-        return 0;
-      case "bool":
         return 0;
     }
   }

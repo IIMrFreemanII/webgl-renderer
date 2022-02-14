@@ -22,13 +22,14 @@ export const SHADER_DATA_TYPE_TO_WEBGL_BASE_TYPE: Record<ShaderDataType, number>
   mat3: FLOAT,
   mat4: FLOAT,
   int: INT,
+  sampler2D: INT,
   ivec2: INT,
   ivec3: INT,
   ivec4: INT,
   bool: BOOL,
 };
 
-export const SHADER_DATA_TYPE_TO_DEFAULT_VALUE: Record<ShaderDataType, any> = {
+export const SHADER_DATA_TYPE_TO_DEFAULT_VALUE: Record<ShaderDataType, ArrayLike<number> | number> = {
   float: 0,
   vec2: vec2.create(),
   vec3: vec3.create(),
@@ -36,10 +37,11 @@ export const SHADER_DATA_TYPE_TO_DEFAULT_VALUE: Record<ShaderDataType, any> = {
   mat3: mat3.create(),
   mat4: mat4.create(),
   int: 0,
+  sampler2D: 0,
   ivec2: vec2.create(),
   ivec3: vec3.create(),
   ivec4: vec4.fromValues(0, 0, 0, 1),
-  bool: false,
+  bool: 0, // 0 = false or 1 = true
 };
 
 export type ShaderDataType =
@@ -53,7 +55,8 @@ export type ShaderDataType =
   | "ivec2"
   | "ivec3"
   | "ivec4"
-  | "bool";
+  | "bool"
+  | "sampler2D";
 
 export const SHADER_DATA_TYPE_SIZE: Record<ShaderDataType, number> = {
   float: 4,
@@ -63,6 +66,7 @@ export const SHADER_DATA_TYPE_SIZE: Record<ShaderDataType, number> = {
   mat3: 4 * 3 * 3,
   mat4: 4 * 4 * 4,
   int: 4,
+  sampler2D: 4,
   ivec2: 4 * 2,
   ivec3: 4 * 3,
   ivec4: 4 * 4,

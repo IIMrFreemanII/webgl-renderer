@@ -1,6 +1,9 @@
-import { projection, rectMesh, view } from "./renderer";
-import { mat3, vec2, vec4 } from "gl-matrix";
+import { defaultMaterial2D, defaultTexture, rectMesh } from "./renderer";
+import { mat3, vec2, vec4, glMatrix } from "gl-matrix";
 import { debounce } from "lodash";
+import { Texture } from "./texture";
+import { Mesh } from "./mesh";
+import { Material } from "./material";
 
 export type RectProps = {
   width: number;
@@ -8,18 +11,48 @@ export type RectProps = {
   x: number;
   y: number;
   bgColor?: vec4;
+  bgImage?: Texture;
 };
 
 export class Rect {
-  bgColor = vec4.fromValues(1, 1, 1, 1);
+  get rotation(): number {
+    return this._rotation;
+  }
+
+  set rotation(value: number) {
+    this._rotation = value;
+    this.updateModel();
+  }
+  private _rotation = 0;
+
+  get bgColor(): vec4 {
+    return this._bgColor;
+  }
+
+  set bgColor(value: vec4) {
+    this._bgColor = value;
+  }
+
+  private _bgColor: vec4;
+
+  get bgImage(): Texture {
+    return this._bgImage;
+  }
+
+  set bgImage(value: Texture) {
+    this.material.uniforms.u_texture0 = value.id;
+    this._bgImage = value;
+  }
+
+  private _bgImage: Texture;
 
   get width(): number {
     return this._width;
   }
 
   set width(value: number) {
-    this.updateModel();
     this._width = value;
+    this.updateModel();
   }
 
   private _width = 0;
@@ -29,8 +62,8 @@ export class Rect {
   }
 
   set height(value: number) {
-    this.updateModel();
     this._height = value;
+    this.updateModel();
   }
 
   private _height = 0;
@@ -42,8 +75,8 @@ export class Rect {
   }
 
   set x(value: number) {
-    this.updateModel();
     this._x = value;
+    this.updateModel();
   }
 
   private _x = 0;
@@ -53,22 +86,30 @@ export class Rect {
   }
 
   set y(value: number) {
-    this.updateModel();
     this._y = value;
+    this.updateModel();
   }
 
   private _y = 0;
   private _position = vec2.fromValues(0, 0);
 
-  public mesh = rectMesh;
-  public model = mat3.create();
+  public mesh: Mesh;
+  public material: Material;
+  public model: mat3 = mat3.create();
 
   constructor(props: RectProps) {
+    this.mesh = rectMesh;
+    this.material = defaultMaterial2D;
+
+    this.bgImage = defaultTexture;
+    this.bgColor = vec4.fromValues(1, 1, 1, 1); // white
+
     Object.assign(this, props);
+
     this.updateModel();
   }
 
-  updateModel = debounce(() => {
+  private updateModel = debounce(() => {
     this._position[0] = this._x;
     this._position[1] = this._y;
 
@@ -77,13 +118,7 @@ export class Rect {
 
     mat3.identity(this.model);
     mat3.translate(this.model, this.model, this._position);
+    mat3.rotate(this.model, this.model, glMatrix.toRadian(this._rotation));
     mat3.scale(this.model, this.model, this._size);
   }, 0);
-
-  setUniforms() {
-    this.mesh.shader.uniforms.u_model.value = this.model;
-    this.mesh.shader.uniforms.u_view.value = view;
-    this.mesh.shader.uniforms.u_projection.value = projection;
-    this.mesh.shader.uniforms.u_bgColor.value = this.bgColor;
-  }
 }

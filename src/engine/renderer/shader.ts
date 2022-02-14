@@ -1,12 +1,18 @@
-import { SHADER_DATA_TYPE_TO_DEFAULT_VALUE, ShaderDataType } from "./webgl-constants";
+import { ShaderDataType } from "./webgl-constants";
 
 export type UniformBlock = { name: string; index: number; target: number };
+export type UniformsData<T extends ArrayLike<number> | number = any> = Record<string, T>;
+export type UniformInfo = {
+  type: string;
+  location: WebGLUniformLocation;
+  setter: any;
+};
+export type UniformInfos = Record<string, UniformInfo>;
 
-export class Shader<T> {
+export class Shader {
   public readonly name: string;
   public uniformBlocks: UniformBlock[];
-  public uniforms: T;
-  private setters: (() => void)[] = [];
+  public uniformInfos: UniformInfos;
 
   public readonly program: WebGLProgram;
   private readonly gl: WebGL2RenderingContext;
@@ -21,7 +27,8 @@ export class Shader<T> {
 
     // Link the two shaders into a program
     this.program = this.createProgram(vertexShader, fragmentShader);
-    this.uniforms = this.extractUniforms(vertSrc, fragScr);
+    // this.uniforms = this.extractUniforms(vertSrc, fragScr);
+    this.uniformInfos = this.getUniformsInfo(vertSrc, fragScr);
     this.uniformBlocks = this.extractUniformBlocks(vertSrc, fragScr);
   }
 
@@ -70,10 +77,6 @@ export class Shader<T> {
     return program;
   }
 
-  public getUniforms() {}
-
-  public getAttributes() {}
-
   private extractUniformBlocks(vertSrc: string, fragSrc: string) {
     const vertUniformBlocks = vertSrc.match(/layout \(std140\) uniform \w+/g) || [];
     const fragUniformBlocks = fragSrc.match(/layout \(std140\) uniform \w+/g) || [];
@@ -92,73 +95,44 @@ export class Shader<T> {
     });
   }
 
-  private extractUniforms(vertSrc: string, fragSrc: string): T {
+  private getUniformsInfo(vertSrc: string, fragSrc: string) {
     const vertUniforms = vertSrc.match(/uniform \w+ \w+/g) || [];
     const fragUniforms = fragSrc.match(/uniform \w+ \w+/g) || [];
 
     const uniforms = Array.from(new Set([...vertUniforms, ...fragUniforms]));
+    let textureUnit = 0;
 
-    return uniforms.reduce((acc, item) => {
+    return uniforms.reduce<UniformInfos>((acc, item) => {
       const [_, type, name] = item.split(" ");
-      const location = this.getUniformLocation(name);
-      const value = SHADER_DATA_TYPE_TO_DEFAULT_VALUE[type];
+      const location = this.getUniformLocation(name) as WebGLUniformLocation;
 
-      const uniform = {
+      let setter;
+      if (type === "sampler2D") {
+        const unit = textureUnit;
+        const callback = typeToSetter[type as ShaderDataType].setter(this.gl, location);
+
+        setter = (value) => {
+          callback(unit);
+          this.gl.activeTexture(this.gl.TEXTURE0 + unit);
+          this.gl.bindTexture(this.gl.TEXTURE_2D, value);
+        };
+
+        textureUnit++;
+      } else {
+        setter = typeToSetter[type as ShaderDataType].setter(this.gl, location);
+      }
+
+      const uniformInfo: UniformInfo = {
         type,
-        value,
-      } as any;
-      const result = {
-        ...acc,
-        [name]: uniform,
+        location,
+        setter,
       };
 
-      const setter = this.getUniformSetterByType(type as ShaderDataType)(location, uniform);
-      this.setters.push(setter as any);
-
-      return result;
-    }, {}) as never;
-  }
-
-  public getAttribLocation(name: string) {
-    return this.gl.getAttribLocation(this.program, name);
-  }
-
-  private getUniformSetterByType(type: ShaderDataType) {
-    switch (type) {
-      case "float":
-        return (location: WebGLUniformLocation | null, obj: any) => () =>
-          this.gl.uniform1f(location, obj.value);
-      case "vec2":
-        return (location: WebGLUniformLocation | null, obj: any) => () =>
-          this.gl.uniform2fv(location, obj.value);
-      case "vec3":
-        return (location: WebGLUniformLocation | null, obj: any) => () =>
-          this.gl.uniform3fv(location, obj.value);
-      case "vec4":
-        return (location: WebGLUniformLocation | null, obj: any) => () =>
-          this.gl.uniform4fv(location, obj.value);
-      case "mat3":
-        return (location: WebGLUniformLocation | null, obj: any) => () =>
-          this.gl.uniformMatrix3fv(location, false, obj.value);
-      case "mat4":
-        return (location: WebGLUniformLocation | null, obj: any) => () =>
-          this.gl.uniformMatrix4fv(location, false, obj.value);
-      case "int":
-        return (location: WebGLUniformLocation | null) => (value: any) =>
-          this.gl.uniform1i(location, value);
-      case "ivec2":
-        return (location: WebGLUniformLocation | null) => (value: any) =>
-          this.gl.uniform2iv(location, value);
-      case "ivec3":
-        return (location: WebGLUniformLocation | null) => (value: any) =>
-          this.gl.uniform3iv(location, value);
-      case "ivec4":
-        return (location: WebGLUniformLocation | null) => (value: any) =>
-          this.gl.uniform4iv(location, value);
-      case "bool":
-        return (location: WebGLUniformLocation | null) => (value: any) =>
-          this.gl.uniform1i(location, value);
-    }
+      return {
+        ...acc,
+        [name]: uniformInfo,
+      };
+    }, {});
   }
 
   public getUniformLocation(name: string) {
@@ -170,10 +144,10 @@ export class Shader<T> {
     this.gl.useProgram(this.program);
   }
 
-  public setUniforms() {
-    for (let i = 0; i < this.setters.length; i++) {
-      this.setters[i]();
-    }
+  public setUniforms(uniforms: UniformsData) {
+    Object.keys(uniforms).forEach((key) => {
+      this.uniformInfos[key].setter(uniforms[key]);
+    });
   }
 
   public unbind() {
@@ -184,3 +158,62 @@ export class Shader<T> {
     this.gl.deleteProgram(this.program);
   }
 }
+
+export const typeToSetter: Record<
+  ShaderDataType,
+  {
+    setter: (
+      gl: WebGL2RenderingContext,
+      location: WebGLUniformLocation | null,
+    ) => (value: any) => void;
+  }
+> = {
+  float: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniform1f(location, value),
+  },
+  vec2: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniform2fv(location, value),
+  },
+  vec3: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniform3fv(location, value),
+  },
+  vec4: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniform4fv(location, value),
+  },
+  mat3: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniformMatrix3fv(location, false, value),
+  },
+  mat4: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniformMatrix4fv(location, false, value),
+  },
+  int: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniform1i(location, value),
+  },
+  bool: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniform1i(location, value),
+  },
+  sampler2D: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniform1i(location, value),
+  },
+  ivec2: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniform2iv(location, value),
+  },
+  ivec3: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniform3iv(location, value),
+  },
+  ivec4: {
+    setter: (gl: WebGL2RenderingContext, location: WebGLUniformLocation | null) => (value: any) =>
+      gl.uniform4iv(location, value),
+  },
+};

@@ -1,27 +1,38 @@
 import { BufferElement, BufferLayout, IndexBuffer, VertexBuffer } from "./buffer";
 import { VertexArray } from "./vertex-array";
-import { Shader } from "./shader";
+import { SHADER_DATA_TYPE_COUNT } from "./webgl-constants";
 
-export class Mesh<A extends object, S extends Shader<any>> {
+export type VertexAttribs = {
+  a_position: {
+    data: number[];
+    type: "vec2";
+  };
+  a_texcoord: {
+    data: number[];
+    type: "vec2";
+  };
+};
+
+export class Mesh {
   gl: WebGL2RenderingContext;
-  vertexAttribs: A;
-  shader: S;
+  vertexAttribs: VertexAttribs;
   indices: number[] | null;
-  vertexArray: VertexArray<S>;
+  vertexArray: VertexArray;
   count: number;
   drawMode: number;
 
   constructor(
     gl: WebGL2RenderingContext,
-    vertexAttribs: A,
-    shader: S,
+    vertexAttribs: VertexAttribs,
     indices: number[] | null = null,
   ) {
     this.gl = gl;
     this.vertexAttribs = vertexAttribs;
-    this.shader = shader;
     this.indices = indices;
-    this.count = indices ? indices.length : vertexAttribs["a_position"].data.length / 2;
+    this.count = indices
+      ? indices.length
+      : vertexAttribs.a_position.data.length /
+        SHADER_DATA_TYPE_COUNT[vertexAttribs.a_position.type];
     this.drawMode = this.gl.TRIANGLES;
 
     const vertexBuffers = Object.entries(vertexAttribs).map(([key, value]) => {
@@ -33,7 +44,7 @@ export class Mesh<A extends object, S extends Shader<any>> {
     });
     const indexBuffer = indices ? new IndexBuffer(this.gl, indices) : null;
 
-    this.vertexArray = new VertexArray<S>(this.gl, this.shader, vertexBuffers, indexBuffer);
+    this.vertexArray = new VertexArray(this.gl, vertexBuffers, indexBuffer);
   }
 
   setData(name: string, value: number[]) {

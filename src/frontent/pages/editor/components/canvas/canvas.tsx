@@ -1,24 +1,32 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { useDidMount, useResize, useDebounce } from "frontent/hooks";
 import { ProfilerUi, PlayButton } from "frontent/components";
 import { CANVAS_WRAPPER_ID } from "./canvas.constants";
+import image1 from "images/f-texture.png";
+import image2 from "images/image2.jpeg";
 
 import styles from "./canvas.module.css";
 import { mainRenderer } from "engine/renderer";
 
+const texture1 = mainRenderer.createTexture(image1);
+const texture2 = mainRenderer.createTexture(image2);
+
 const rect1 = mainRenderer.createRect({
-  width: 100,
+  width: 200,
   height: 100,
-  x: 0,
-  y: 0,
+  x: 100,
+  y: 100,
+  bgImage: texture1,
 });
+rect1.rotation = 45;
 
 const rect2 = mainRenderer.createRect({
   width: 100,
   height: 100,
   x: 300,
   y: 300,
+  bgImage: texture2,
 });
 
 export const Canvas = () => {
@@ -39,16 +47,13 @@ export const Canvas = () => {
   });
 
   useEffect(() => {
-    requestAnimationFrame(function render() {
-      mainRenderer.renderRects();
-      console.log("render");
-      // requestAnimationFrame(render);
-    });
-
-    // setTimeout(() => {
-    //   mainRenderer.renderRects();
-    //   console.log("render");
-    // }, 0);
+    setTimeout(() => {
+      requestAnimationFrame(function render() {
+        mainRenderer.render2D();
+        // console.log("render");
+        // requestAnimationFrame(render);
+      });
+    }, 100);
   }, []);
 
   return (

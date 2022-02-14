@@ -1,11 +1,10 @@
-import { Shader } from "./shader";
-
-// export type Uniforms = {};
+import { Shader, UniformsData } from "./shader";
 
 export class Material {
-  // public shader: Shader;
-  //
-  // constructor(shader: Shader) {
-  //   this.shader = shader;
-  // }
+  public shader: Shader;
+  public uniforms: UniformsData = {};
+
+  constructor(shader: Shader) {
+    this.shader = shader;
+  }
 }

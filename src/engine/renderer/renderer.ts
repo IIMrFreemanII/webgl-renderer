@@ -1,15 +1,13 @@
-import { mat3, mat4, vec2 } from "gl-matrix";
-import { Shader } from "./shader";
+import { glMatrix, mat3, vec2 } from "gl-matrix";
+import { Shader, UniformsData } from "./shader";
 
-import {
-  vertex,
-  fragment,
-  Default2DAttribs,
-  Default2DUniforms,
-} from "assets/shaders/default-2d.shader";
+import { vertex, fragment } from "assets/shaders/default-2d.shader";
 import { Mesh } from "./mesh";
 import { UniformBuffer } from "./buffer";
 import { Rect, RectProps } from "./rect";
+import { Texture } from "./texture";
+import { Material } from "./material";
+import { pointIntersectsAABB } from "../../math/point-in-rect";
 
 export const getQuadVertices = (w: number, h: number, x = 0, y = 0) => {
   return [x, y, x, h + y, w + x, h + y, x, y, w + x, h + y, w + x, y];
@@ -32,7 +30,54 @@ export class Renderer {
   gl = this.canvas.getContext("webgl2") as WebGL2RenderingContext;
   ubos: UniformBufferObjects;
 
+  selectedRect: Rect | null = null;
+  hoveredRect: Rect | null = null;
+
   rects: Rect[] = [];
+  textures: Texture[] = [];
+  materials: Material[] = [];
+  shaders: Shader[] = [];
+
+  constructor() {
+    this.canvas.addEventListener("mousemove", (e) => {
+      const boundingRect = this.canvas.getBoundingClientRect();
+      const mousePos = vec2.fromValues(e.x - boundingRect.x, e.y - boundingRect.y);
+      this.hoveredRect = this.findRectBy(mousePos);
+    });
+
+    this.canvas.addEventListener("click", (e) => {
+      const boundingRect = this.canvas.getBoundingClientRect();
+      const mousePos = vec2.fromValues(e.x - boundingRect.x, e.y - boundingRect.y);
+      this.selectedRect = this.findRectBy(mousePos);
+    });
+  }
+
+  findRectBy(mousePosition: vec2): Rect | null {
+    for (let i = this.rects.length - 1; i >= 0; i--) {
+      const rect = this.rects[i];
+      const rotatedMousePos = vec2.rotate(
+        vec2.create(),
+        mousePosition,
+        vec2.fromValues(rect.x, rect.y),
+        // inverse of rotation (rotate in opposite direction)
+        glMatrix.toRadian(-rect.rotation),
+      );
+      const aabb = {
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+        height: rect.height,
+      };
+
+      const isMouseOver = pointIntersectsAABB(rotatedMousePos, aabb);
+
+      if (isMouseOver) {
+        return rect;
+      }
+    }
+
+    return null;
+  }
 
   setSize(width: number, height: number) {
     this.canvas.width = width;
@@ -46,68 +91,80 @@ export class Renderer {
     return vec2.fromValues(this.canvas.width, this.canvas.height);
   }
 
+  createMaterial(shader: Shader) {
+    const material = new Material(shader);
+    this.materials.push(material);
+    return material;
+  }
+
+  createShader(name: string, vertSrc: string, fragSrc: string) {
+    const shader = new Shader(this.gl, name, vertSrc, fragSrc);
+    this.shaders.push(shader);
+    return shader;
+  }
+
+  createTexture(src?: string): Texture {
+    const texture = new Texture(this.gl, src);
+    this.textures.push(texture);
+    return texture;
+  }
+
   createRect(props: RectProps): Rect {
     const rect = new Rect(props);
     this.rects.push(rect);
     return rect;
   }
 
-  renderRects() {
+  drawRects() {
     this.rects.forEach((rect) => {
-      rect.setUniforms();
-      mainRenderer.submitRect(rect);
+      mainRenderer.drawMesh(rect.mesh, rect.material, rect.model, cameraView, {
+        u_texture0: rect.bgImage.id,
+        u_bgColor: rect.bgColor,
+      });
     });
   }
 
-  submit<T extends object, S extends Shader<any>>(mesh: Mesh<T, S>) {
+  drawMesh(
+    mesh: Mesh,
+    material: Material,
+    model: mat3,
+    view: mat3 = cameraView,
+    uniformsData?: UniformsData,
+  ) {
+    material.uniforms.u_model = model;
+    material.uniforms.u_view = view;
+    material.uniforms.u_projection = projection;
+
+    material.shader.bind();
+    material.shader.setUniforms({ ...material.uniforms, ...uniformsData });
+
     mesh.vertexArray.bind();
-    mesh.shader.bind();
-    mesh.shader.setUniforms();
 
     this.drawArrays(mesh);
   }
 
-  submitRect(rect: Rect) {
-    rect.mesh.vertexArray.bind();
-    rect.mesh.shader.bind();
-    rect.mesh.shader.setUniforms();
-    this.drawArrays(rect.mesh);
-  }
-
-  begin(perspective: mat4, view: mat4) {
-    this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-    // Clear the canvas
-    this.clear();
-    // turn on depth testing
-    this.gl.enable(this.gl.DEPTH_TEST);
-    // tell webgl to cull faces
+  begin2D() {
+    this.clear2D();
     this.gl.enable(this.gl.CULL_FACE);
   }
 
-  end() {}
+  render2D() {
+    this.begin2D();
+    this.drawRects();
+    this.end2D();
+  }
+
+  end2D() {}
 
   start() {
-    const shader = new Shader<Default2DUniforms>(this.gl, "default2D", vertex, fragment);
     const quads = [
       {
-        mesh: new Mesh<Default2DAttribs, Shader<Default2DUniforms>>(
-          this.gl,
-          {
-            a_position: { data: getQuadVertices(1, 1), type: "vec2" },
-          },
-          shader,
-        ),
+        mesh: rectMesh,
         x: 100,
         y: 200,
       },
       {
-        mesh: new Mesh<Default2DAttribs, Shader<Default2DUniforms>>(
-          this.gl,
-          {
-            a_position: { data: getQuadVertices(1, 1), type: "vec2" },
-          },
-          shader,
-        ),
+        mesh: rectMesh,
         x: 300,
         y: 200,
       },
@@ -161,11 +218,11 @@ export class Renderer {
         const projection = mat3.create();
         mat3.projection(projection, this.canvas.width, this.canvas.height);
 
-        quad.mesh.shader.bind();
-        quad.mesh.shader.uniforms.u_projection.value = projection;
-        quad.mesh.shader.uniforms.u_view.value = view;
-        quad.mesh.shader.uniforms.u_model.value = model;
-        quad.mesh.shader.setUniforms();
+        // quad.mesh.shader.bind();
+        // quad.mesh.shader.uniforms.u_projection.value = projection;
+        // quad.mesh.shader.uniforms.u_view.value = view;
+        // quad.mesh.shader.uniforms.u_model.value = model;
+        // quad.mesh.shader.setUniforms();
 
         quad.mesh.vertexArray.bind();
         this.drawArrays(quad.mesh);
@@ -178,14 +235,11 @@ export class Renderer {
     requestAnimationFrame(animate);
   }
 
-  drawArrays<T extends object, S extends Shader<any>>(mesh: Mesh<T, S>) {
+  drawArrays(mesh: Mesh) {
     this.gl.drawArrays(mesh.drawMode, 0, mesh.count);
   }
 
-  drawArraysInstanced<T extends object, S extends Shader<any>>(
-    mesh: Mesh<T, S>,
-    instancesCount: number,
-  ) {
+  drawArraysInstanced(mesh: Mesh, instancesCount: number) {
     this.gl.drawArraysInstanced(mesh.drawMode, 0, mesh.count, instancesCount);
   }
 
@@ -203,23 +257,22 @@ export class Renderer {
 export const mainRenderer = new Renderer();
 
 const cameraPosition = vec2.fromValues(0, 0);
-export const view = mat3.create();
-mat3.translate(view, view, cameraPosition);
-mat3.invert(view, view);
+export const cameraView = mat3.create();
+mat3.translate(cameraView, cameraView, cameraPosition);
+mat3.invert(cameraView, cameraView);
 
 export const projection = mat3.create();
 mat3.projection(projection, mainRenderer.canvas.width, mainRenderer.canvas.height);
 
-export const defaultShader2D = new Shader<Default2DUniforms>(
-  mainRenderer.gl,
-  "default2D",
-  vertex,
-  fragment,
-);
-export const rectMesh = new Mesh<Default2DAttribs, Shader<Default2DUniforms>>(
-  mainRenderer.gl,
-  {
-    a_position: { data: getQuadVertices(1, 1), type: "vec2" },
+export const defaultTexture = mainRenderer.createTexture();
+
+export const defaultShader2D = mainRenderer.createShader("default2D", vertex, fragment);
+export const defaultMaterial2D = mainRenderer.createMaterial(defaultShader2D);
+
+export const rectMesh = new Mesh(mainRenderer.gl, {
+  a_position: { data: getQuadVertices(1, 1), type: "vec2" },
+  a_texcoord: {
+    data: getQuadVertices(1, 1),
+    type: "vec2",
   },
-  defaultShader2D,
-);
+});
