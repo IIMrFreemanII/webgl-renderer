@@ -7,7 +7,7 @@ import { UniformBuffer } from "./buffer";
 import { Rect, RectProps } from "./rect";
 import { Texture } from "./texture";
 import { Material } from "./material";
-import { pointIntersectsAABB } from "../../math/point-in-rect";
+import { pointIntersectsAABB } from "../../math/point-intersects-aabb";
 
 export const getQuadVertices = (w: number, h: number, x = 0, y = 0) => {
   return [x, y, x, h + y, w + x, h + y, x, y, w + x, h + y, w + x, y];
