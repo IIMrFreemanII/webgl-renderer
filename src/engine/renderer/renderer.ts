@@ -30,6 +30,9 @@ export class Renderer {
   gl = this.canvas.getContext("webgl2") as WebGL2RenderingContext;
   ubos: UniformBufferObjects;
 
+  cameraView: mat3 = mat3.create();
+  projection: mat3 = mat3.create();
+
   selectedRect: Rect | null = null;
   hoveredRect: Rect | null = null;
 
@@ -39,6 +42,12 @@ export class Renderer {
   shaders: Shader[] = [];
 
   constructor() {
+    const cameraPosition = vec2.fromValues(0, 0);
+    mat3.translate(this.cameraView, this.cameraView, cameraPosition);
+    mat3.invert(this.cameraView, this.cameraView);
+
+    mat3.projection(this.projection, this.canvas.width, this.canvas.height);
+
     this.canvas.addEventListener("mousemove", (e) => {
       const boundingRect = this.canvas.getBoundingClientRect();
       const mousePos = vec2.fromValues(e.x - boundingRect.x, e.y - boundingRect.y);
@@ -84,7 +93,7 @@ export class Renderer {
     this.canvas.height = height;
     this.gl.viewport(0, 0, width, height);
 
-    mat3.projection(projection, width, height);
+    mat3.projection(this.projection, width, height);
   }
 
   getSize(): vec2 {
@@ -116,24 +125,19 @@ export class Renderer {
   }
 
   drawRects() {
-    this.rects.forEach((rect) => {
-      mainRenderer.drawMesh(rect.mesh, rect.material, rect.model, cameraView, {
-        u_texture0: rect.bgImage.id,
-        u_bgColor: rect.bgColor,
-      });
-    });
+    this.rects.forEach((rect) => rect.draw(this));
   }
 
   drawMesh(
     mesh: Mesh,
     material: Material,
     model: mat3,
-    view: mat3 = cameraView,
+    view: mat3 = this.cameraView,
     uniformsData?: UniformsData,
   ) {
     material.uniforms.u_model = model;
     material.uniforms.u_view = view;
-    material.uniforms.u_projection = projection;
+    material.uniforms.u_projection = this.projection;
 
     material.shader.bind();
     material.shader.setUniforms({ ...material.uniforms, ...uniformsData });
@@ -255,14 +259,6 @@ export class Renderer {
 }
 
 export const mainRenderer = new Renderer();
-
-const cameraPosition = vec2.fromValues(0, 0);
-export const cameraView = mat3.create();
-mat3.translate(cameraView, cameraView, cameraPosition);
-mat3.invert(cameraView, cameraView);
-
-export const projection = mat3.create();
-mat3.projection(projection, mainRenderer.canvas.width, mainRenderer.canvas.height);
 
 export const defaultTexture = mainRenderer.createTexture();
 

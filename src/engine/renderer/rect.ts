@@ -1,6 +1,5 @@
-import { defaultMaterial2D, defaultTexture, rectMesh } from "./renderer";
+import { defaultMaterial2D, defaultTexture, rectMesh, Renderer } from "./renderer";
 import { mat3, vec2, vec4, glMatrix } from "gl-matrix";
-import { debounce } from "lodash";
 import { Texture } from "./texture";
 import { Mesh } from "./mesh";
 import { Material } from "./material";
@@ -20,9 +19,10 @@ export class Rect {
   }
 
   set rotation(value: number) {
+    this.shouldUpdateModel = true;
     this._rotation = value;
-    this.updateModel();
   }
+
   private _rotation = 0;
 
   get bgColor(): vec4 {
@@ -40,7 +40,6 @@ export class Rect {
   }
 
   set bgImage(value: Texture) {
-    this.material.uniforms.u_texture0 = value.id;
     this._bgImage = value;
   }
 
@@ -51,8 +50,8 @@ export class Rect {
   }
 
   set width(value: number) {
+    this.shouldUpdateModel = true;
     this._width = value;
-    this.updateModel();
   }
 
   private _width = 0;
@@ -62,8 +61,8 @@ export class Rect {
   }
 
   set height(value: number) {
+    this.shouldUpdateModel = true;
     this._height = value;
-    this.updateModel();
   }
 
   private _height = 0;
@@ -75,8 +74,8 @@ export class Rect {
   }
 
   set x(value: number) {
+    this.shouldUpdateModel = true;
     this._x = value;
-    this.updateModel();
   }
 
   private _x = 0;
@@ -86,8 +85,8 @@ export class Rect {
   }
 
   set y(value: number) {
+    this.shouldUpdateModel = true;
     this._y = value;
-    this.updateModel();
   }
 
   private _y = 0;
@@ -109,7 +108,17 @@ export class Rect {
     this.updateModel();
   }
 
-  private updateModel = debounce(() => {
+  public draw(renderer: Renderer) {
+    if (this.shouldUpdateModel) this.updateModel();
+
+    renderer.drawMesh(this.mesh, this.material, this.model, renderer.cameraView, {
+      u_texture0: this.bgImage.id,
+      u_bgColor: this.bgColor,
+    });
+  }
+
+  private shouldUpdateModel = false;
+  updateModel() {
     this._position[0] = this._x;
     this._position[1] = this._y;
 
@@ -120,5 +129,5 @@ export class Rect {
     mat3.translate(this.model, this.model, this._position);
     mat3.rotate(this.model, this.model, glMatrix.toRadian(this._rotation));
     mat3.scale(this.model, this.model, this._size);
-  }, 0);
+  }
 }
