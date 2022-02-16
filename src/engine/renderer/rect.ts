@@ -96,6 +96,8 @@ export class Rect {
   public material: Material;
   public model: mat3 = mat3.create();
 
+  public children: Rect[] = [];
+
   constructor(props: RectProps) {
     this.mesh = rectMesh;
     this.material = defaultMaterial2D;
@@ -115,6 +117,8 @@ export class Rect {
       u_texture0: this.bgImage.id,
       u_bgColor: this.bgColor,
     });
+
+    this.children.forEach((rect) => rect.draw(renderer));
   }
 
   private shouldUpdateModel = false;
