@@ -10,5 +10,5 @@ export const pointIntersectsAABB = (mousePosition: vec2, box: AABB): boolean => 
   const { x, y, width, height } = box;
   const [mouseX, mouseY] = mousePosition;
 
-  return mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height;
+  return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
 };
