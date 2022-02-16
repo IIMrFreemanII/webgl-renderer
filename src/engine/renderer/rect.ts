@@ -92,9 +92,9 @@ export class Rect {
   private _y = 0;
   private _position = vec2.fromValues(0, 0);
 
-  public mesh: Mesh;
-  public material: Material;
-  public model: mat3 = mat3.create();
+  private readonly mesh: Mesh;
+  private readonly material: Material;
+  private model: mat3 = mat3.create();
 
   public children: Rect[] = [];
 
@@ -122,7 +122,7 @@ export class Rect {
   }
 
   private shouldUpdateModel = false;
-  updateModel() {
+  private updateModel() {
     this._position[0] = this._x;
     this._position[1] = this._y;
 
