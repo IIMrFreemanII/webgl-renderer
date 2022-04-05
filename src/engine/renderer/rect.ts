@@ -3,17 +3,18 @@ import { mat3, vec2, vec4, glMatrix } from "gl-matrix";
 import { Texture } from "./texture";
 import { Mesh } from "./mesh";
 import { Material } from "./material";
+import { Widget } from "../ui/widget";
 
 export type RectProps = {
-  width: number;
-  height: number;
-  x: number;
-  y: number;
+  width?: number;
+  height?: number;
+  x?: number;
+  y?: number;
   bgColor?: vec4;
   bgImage?: Texture;
 };
 
-export class Rect {
+export class Rect extends Widget {
   get rotation(): number {
     return this._rotation;
   }
@@ -96,9 +97,11 @@ export class Rect {
   private readonly material: Material;
   private model: mat3 = mat3.create();
 
-  public children: Rect[] = [];
+  public children: Widget[] = [];
 
   constructor(props: RectProps) {
+    super();
+
     this.mesh = rectMesh;
     this.material = defaultMaterial2D;
 
@@ -110,7 +113,7 @@ export class Rect {
     this.updateModel();
   }
 
-  public draw(renderer: Renderer) {
+  public build(renderer: Renderer) {
     if (this.shouldUpdateModel) this.updateModel();
 
     renderer.drawMesh(this.mesh, this.material, this.model, renderer.cameraView, {
@@ -118,10 +121,11 @@ export class Rect {
       u_bgColor: this.bgColor,
     });
 
-    this.children.forEach((rect) => rect.draw(renderer));
+    this.children.forEach((widget) => widget.build(renderer));
   }
 
   private shouldUpdateModel = false;
+
   private updateModel() {
     this._position[0] = this._x;
     this._position[1] = this._y;

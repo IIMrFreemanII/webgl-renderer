@@ -7,25 +7,21 @@ import image1 from "images/f-texture.png";
 import image2 from "images/image2.jpeg";
 
 import styles from "./canvas.module.css";
-import { mainRenderer } from "engine/renderer";
+import { fromFlatTo2D, mainRenderer } from "engine/renderer";
+import { mat4, vec3, vec4 } from "gl-matrix";
 
 const texture1 = mainRenderer.createTexture(image1);
 const texture2 = mainRenderer.createTexture(image2);
 
 const rect1 = mainRenderer.createRect({
-  width: 200,
+  width: 100,
   height: 100,
-  x: 100,
-  y: 100,
   bgImage: texture1,
 });
-rect1.rotation = 45;
 
 const rect2 = mainRenderer.createRect({
   width: 100,
   height: 100,
-  x: 300,
-  y: 300,
   bgImage: texture2,
 });
 
@@ -47,6 +43,8 @@ export const Canvas = () => {
   });
 
   useEffect(() => {
+    const matrix = mat4.fromTranslation(mat4.create(), vec3.fromValues(100, 100, 100));
+    //console.log(fromFlatTo2D(matrix as number[]));
     setTimeout(() => {
       requestAnimationFrame(function render() {
         mainRenderer.render2D();

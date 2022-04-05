@@ -10,11 +10,9 @@ export interface ProvidersProps {
 const themes = [lightTheme, darkTheme];
 
 export const Providers: React.FC<ProvidersProps> = memo(({ children }: ProvidersProps) => (
-  <React.StrictMode>
-    <ThemeProvider themes={themes} initialTheme={themes[0]}>
-      {children}
-    </ThemeProvider>
-  </React.StrictMode>
+  <ThemeProvider themes={themes} initialTheme={themes[0]}>
+    {children}
+  </ThemeProvider>
 ));
 
 export default Providers;

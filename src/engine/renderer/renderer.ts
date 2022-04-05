@@ -8,19 +8,20 @@ import { Rect, RectProps } from "./rect";
 import { Texture } from "./texture";
 import { Material } from "./material";
 import { pointIntersectsAABB } from "../../math/point-intersects-aabb";
+import { Widget } from "../ui/widget";
 
 export const getQuadVertices = (w: number, h: number, x = 0, y = 0) => {
   return [x, y, x, h + y, w + x, h + y, x, y, w + x, h + y, w + x, y];
 };
 
-const fromFlatTo2D = (matrix4: number[]) => {
-  const arr: number[][] = [];
-  arr[0] = matrix4.slice(0, 4);
-  arr[1] = matrix4.slice(4, 8);
-  arr[2] = matrix4.slice(8, 12);
-  arr[3] = matrix4.slice(12, 16);
+export const fromFlatTo2D = (matrix4: number[]) => {
+  const arr: string[] = [];
+  arr[0] = `${matrix4.slice(0, 4).toString()}\n`;
+  arr[1] = `${matrix4.slice(4, 8).toString()}\n`;
+  arr[2] = `${matrix4.slice(8, 12).toString()}\n`;
+  arr[3] = `${matrix4.slice(12, 16).toString()}\n`;
 
-  return arr;
+  return arr.toString();
 };
 
 export type UniformBufferObjects = Record<string, UniformBuffer>;
@@ -125,7 +126,11 @@ export class Renderer {
   }
 
   drawRects() {
-    this.rects.forEach((rect) => rect.draw(this));
+    this.rects.forEach((rect) => rect.build(this));
+  }
+
+  drawWidget(widget: Widget) {
+    widget.build(this);
   }
 
   drawMesh(
